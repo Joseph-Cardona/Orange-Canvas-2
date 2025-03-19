@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="https://cdn.glitch.global/3aadc098-a2ee-41ed-aae7-4dc2a1fc577c/lil%20man%20icon%20(2)%20(1).png?v=1690859199433" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet" />
+  <title>New Post - Orange Canvas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: white;
+      color: black;
+      text-align: center;
+      font-family: 'League Spartan', sans-serif;
+    }
+
+    h1 {
+      font-size: 60px;
+    }
+
+    ::selection {
+      background-color: #6fa8dc;
+      color: #222222;
+    }
+
+    #newProject {
+      position: fixed;
+      font-size: 60px;
+      top: 5px;
+      right: 10px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    #newProject:hover {
+      color: inherit;
+    }
+
+    /* Add the following CSS for the hamburger menu */
+    .hamburger {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 30px;
+      height: 3px;
+      background-color: black;
+      margin-bottom: 5px;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Add the following CSS for the menu */
+    .menu {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 70%;
+      max-width: 300px;
+      height: 100%;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: left 0.3s ease-in-out;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    @media (max-width: 1024px) {
+      .menu {
+        width: 100%;
+        max-width: 100%;
+        left: -100%;
+      }
+    }
+
+    .menu.active {
+      left: 0;
+    }
+
+
+    .menu a {
+      font-size: 24px;
+      color: black;
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+    
+    a{
+      color: black;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="menu">
+    <a href="/">Home</a>
+    <a id="profile" href="/login">Profile</a>
+    <a href="/canvas">New Drawing</a>
+    <!--<a href="/login">Notifications</a>-->
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSe3cZSWTuwoz5ItiMCFLbqiYRpHYQ7KoKpVfKE1cNNh_zMnbg/viewform">New Post</a>
+    <a href="/guidelines">Guidelines</a>
+    <a href="/support">Support</a>
+    <a id="loginLink" href="/login" onclick="signout()">Login</a>
+  </div>
+  <a href="/canvas" id="newProject">+</a>
+  <h1>Share Your Art</h1>
+  
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSe3cZSWTuwoz5ItiMCFLbqiYRpHYQ7KoKpVfKE1cNNh_zMnbg/viewform?usp=sf_link">Submit Art Here</a>
+  
+  <script>
+    function toggleMenu() {
+      const hamburger = document.querySelector('.hamburger');
+      const menu = document.querySelector('.menu');
+      
+      hamburger.classList.toggle('active');
+      menu.classList.toggle('active');
+    }
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' || event.keyCode === 27) {
+        toggleMenu()
+      }
+    });
+    
+    function getCookie(name) {
+      const cookieName = name + "=";
+      const decodedCookies = decodeURIComponent(document.cookie);
+      const cookies = decodedCookies.split(";");
+
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i];
+        while (cookie.charAt(0) === " ") {
+          cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(cookieName) === 0) {
+          return cookie.substring(cookieName.length, cookie.length);
+        }
+      }
+      return "";
+    }
+
+    // Check if the username cookie exists and redirect if the user is logged in
+    const usernameCookie = getCookie('username');
+    if (usernameCookie) {
+      console.log("You are signed in");
+      document.getElementById('loginLink').href = "#"
+      document.getElementById('profile').href = "/u/" + usernameCookie
+      document.getElementById('loginLink').textContent = "Signout"
+    }
+    
+    function deleteCookie(name) {
+      // Set the expiration date to a date in the past
+      const expirationDate = new Date();
+      expirationDate.setDate(expirationDate.getDate() - 1);
+
+      // Delete the cookie by setting its expiration date to the past
+      document.cookie = `${encodeURIComponent(name)}=;expires=${expirationDate.toUTCString()};path=/`;
+
+      console.log(`Cookie "${name}" has been deleted.`);
+    }   
+    function signout(){
+      if (usernameCookie) {
+        deleteCookie('username')
+        window.location.href = "/login";
+      }
+    }
+  </script>
+</body>
+</html>
