@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="https://cdn.glitch.global/3aadc098-a2ee-41ed-aae7-4dc2a1fc577c/lil%20man%20icon%20(2)%20(1).png?v=1690859199433" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <title>Guidelines - Orange Canvas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        background: white;
+        color: black;
+        text-align: center;
+        font-family: "League Spartan", sans-serif;
+      }
+
+      h1 {
+        font-size: 60px;
+      }
+
+      ::selection {
+        background-color: #6fa8dc;
+        color: #222222;
+      }
+
+      #newProject {
+        position: fixed;
+        font-size: 60px;
+        top: 5px;
+        right: 10px;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      #newProject:hover {
+        color: inherit;
+      }
+
+      /* Add the following CSS for the hamburger menu */
+      .hamburger {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        cursor: pointer;
+        z-index: 1;
+      }
+
+      .hamburger span {
+        display: block;
+        width: 30px;
+        height: 3px;
+        background-color: black;
+        margin-bottom: 5px;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .hamburger.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+
+      /* Add the following CSS for the menu */
+      .menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: 100%;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: left 0.3s ease-in-out;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+      }
+
+      @media (max-width: 1024px) {
+        .menu {
+          width: 100%;
+          max-width: 100%;
+          left: -100%;
+        }
+      }
+
+      .menu.active {
+        left: 0;
+      }
+
+      .menu a {
+        font-size: 24px;
+        color: black;
+        text-decoration: none;
+        margin-bottom: 20px;
+      }
+
+      ul {
+        list-style: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="menu">
+      <a href="/">Home</a>
+      <a id="profile" href="/login">Profile</a>
+      <a href="/canvas">New Drawing</a>
+      <!--<a href="/login">Notifications</a>-->
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSe3cZSWTuwoz5ItiMCFLbqiYRpHYQ7KoKpVfKE1cNNh_zMnbg/viewform">New Post</a>
+      <a href="/guidelines">Guidelines</a>
+      <a href="/support">Support</a>
+      <a id="loginLink" href="/login" onclick="signout()">Login</a>
+    </div>
+    <a href="/canvas" id="newProject">+</a>
+    <h1>Guidelines</h1>
+    <h2>Treat Others with Respect</h2>
+    <p>
+      Show respect and kindness to all individuals, regardless of their
+      background, opinions, or abilities.
+    </p>
+    <p>Avoid any form of verbal, physical, or emotional harassment or abuse.</p>
+    <br />
+    <h2>No Politics</h2>
+    <p>Use of figures related to politics and flags are prohibited.</p>
+    <br />
+    <h2>Keep It Kid Friendly</h2>
+    <p>
+      Swears, inappropriate drawings, and anything not safe for young children
+      are banned.
+    </p>
+    <br />
+    <h2>Respect Laws</h2>
+    <p>
+      Observe all applicable laws, rules, and regulations, both local and
+      international.
+    </p>
+    <br />
+    <h2>Obey Trademarks And Copyrights</h2>
+    <p>
+      Do not use any trademarked or copyrighted properties in your drawings.
+    </p>
+    <br />
+    <h2>Don't Hack</h2>
+    <p>Refrain from abusing any of the website's APIs and features.</p>
+    <br />
+    <h2>Use Common Sense</h2>
+    <p>Use your common sense; don't try to find loopholes.</p>
+    <br />
+    <h2>No Spam or Self-Promotion</h2>
+    <p>
+      Prohibit users from spamming the website with repetitive or irrelevant
+      content.
+    </p>
+    <p>
+      Avoid self-promotion, advertising, or excessive links to external websites
+      without proper authorization.
+    </p>
+    <br />
+    <h2>Respect Others' Feedback and Opinions</h2>
+    <p>
+      Encourage users to provide constructive criticism and feedback, but
+      emphasize the importance of delivering it in a respectful and supportive
+      manner.
+    </p>
+    <p>
+      Remind users not to take feedback personally and to stay open to different
+      perspectives.
+    </p>
+    <br />
+    <h2>Proper Use of Reporting Feature</h2>
+    <p>
+      Explain the appropriate use of the reporting feature for reporting
+      offensive or inappropriate content.
+    </p>
+    <p>Discourage false reporting or misuse of the reporting system.</p>
+    <br />
+    <h2>No Impersonation</h2>
+    <p>Prohibit users from impersonating others or creating fake accounts.</p>
+    <br />
+    <h2>Respect Site Administrators and Moderators</h2>
+    <p>Emphasize the authority of site administrators and moderators.</p>
+    <p>
+      Instruct users to follow their directions and decisions regarding content
+      and behavior.
+    </p>
+    <br />
+    <h2>Data Security</h2>
+    <p>
+      Ensure users understand the website's data security measures and their
+      responsibilities in safeguarding their personal information.
+    </p>
+    <br />
+    <h2>No Plagiarism or Art Theft</h2>
+    <p>
+      Explicitly state that users must not copy or steal others' artwork and
+      claim it as their own.
+    </p>
+    <p>
+      Encourage proper attribution and credit for any referenced or
+      collaborative work.
+    </p>
+    <br />
+    <h2>Age Verification and Parental Consent</h2>
+    <p>
+      If applicable, implement age verification for users to access certain
+      features.
+    </p>
+    <p>
+      Require parental consent for users under a certain age to use the website.
+    </p>
+    <br />
+    <h2>Clear Consequences for Violations</h2>
+    <p>
+      Specify the consequences of violating the guidelines, including warnings,
+      temporary bans, or permanent account suspension.
+    </p>
+    <br />
+    <h2>Update Policy</h2>
+    <p>
+      Mention that the guidelines may be updated from time to time, and it's the
+      user's responsibility to stay informed about any changes.
+    </p>
+    <br />
+
+    <script>
+      function toggleMenu() {
+        const hamburger = document.querySelector(".hamburger");
+        const menu = document.querySelector(".menu");
+
+        hamburger.classList.toggle("active");
+        menu.classList.toggle("active");
+      }
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" || event.keyCode === 27) {
+          toggleMenu();
+        }
+      });
+      
+      
+      function getCookie(name) {
+      const cookieName = name + "=";
+      const decodedCookies = decodeURIComponent(document.cookie);
+      const cookies = decodedCookies.split(";");
+
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i];
+        while (cookie.charAt(0) === " ") {
+          cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(cookieName) === 0) {
+          return cookie.substring(cookieName.length, cookie.length);
+        }
+      }
+      return "";
+    }
+
+    // Check if the username cookie exists and redirect if the user is logged in
+    const usernameCookie = getCookie('username');
+    if (usernameCookie) {
+      console.log("You are signed in");
+      document.getElementById('loginLink').href = "#"
+      document.getElementById('profile').href = "/u/" + usernameCookie
+      document.getElementById('loginLink').textContent = "Signout"
+    }
+      
+      function deleteCookie(name) {
+      // Set the expiration date to a date in the past
+      const expirationDate = new Date();
+      expirationDate.setDate(expirationDate.getDate() - 1);
+
+      // Delete the cookie by setting its expiration date to the past
+      document.cookie = `${encodeURIComponent(name)}=;expires=${expirationDate.toUTCString()};path=/`;
+
+      console.log(`Cookie "${name}" has been deleted.`);
+    }   
+    function signout(){
+      if (usernameCookie) {
+        deleteCookie('username')
+        window.location.href = "/login";
+      }
+    }
+    </script>
+  </body>
+</html>

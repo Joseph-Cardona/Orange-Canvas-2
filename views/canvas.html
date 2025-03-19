@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="https://cdn.glitch.global/3aadc098-a2ee-41ed-aae7-4dc2a1fc577c/lil%20man%20icon%20(2)%20(1).png?v=1690859199433" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet" />
+  <title>Draw - Orange Canvas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: white;
+      color: black;
+      text-align: center;
+      font-family: 'League Spartan', sans-serif;
+      padding: 0;
+      overflow: hidden; /* Disable scrolling */
+    }
+
+    h1 {
+      font-size: 60px;
+    }
+
+    ::selection {
+      background-color: #6fa8dc;
+      color: #222222;
+    }
+
+    /* Add the following CSS for the hamburger menu */
+    .hamburger {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 30px;
+      height: 3px;
+      background-color: black;
+      margin-bottom: 5px;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Add the following CSS for the menu */
+    .menu {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 70%;
+      max-width: 300px;
+      height: 100%;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: left 0.3s ease-in-out;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    @media (max-width: 1024px) {
+      .menu {
+        width: 100%;
+        max-width: 100%;
+        left: -100%;
+      }
+    }
+
+    .menu.active {
+      left: 0;
+    }
+
+
+    .menu a {
+      font-size: 24px;
+      color: black;
+      text-decoration: none;
+      margin-bottom: 5px;
+      margin-top: 15px;
+    }
+    
+    #canvas-container {
+      background-color: white;
+      width: 100%;
+      height: 100vh;
+      cursor: crosshair;
+    }
+    
+    a {
+      cursor: pointer;
+    }
+    
+    input {
+      background-color: white;
+      color: yellow;
+      border-radius: 10%;
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+    }
+    .styled-range {
+      /* Removes default track and thumb styles */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      /* Sets the height of the track */
+      height: 8px;
+      width: 80px;
+      background-color: white;
+      /* Adds a border-radius to make the thumb round */
+      border-radius: 10%;
+      /* Adds a box-shadow to give a raised effect to the thumb */
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+    }
+    /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+    .styled-range::-webkit-slider-thumb {
+      -webkit-appearance: none; /* Override default look */
+      appearance: none;
+      border-radius: 50%;
+      width: 15px; /* Set a specific slider handle width */
+      height: 15px; /* Slider handle height */
+      background: black; /* Green background */
+      cursor: pointer; /* Cursor on hover */
+    }
+
+    .styled-range::-moz-range-thumb {
+      border-radius: 50%;
+      width: 15px; /* Set a specific slider handle width */
+      height: 15px; /* Slider handle height */
+      background: black; /* Green background */
+      cursor: pointer; /* Cursor on hover */
+    }
+    
+    #draw{
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="menu" id="menu">
+    <a href="/">Home</a>
+    <a onclick="clearCanvas()">Clear</a>
+    <a onclick="saveFile()">Save</a>
+    <!--<select id="fileType" name="File Type">
+      <option value="png">PNG</option>
+      <option value="jpg">JPG</option>
+    </select>-->
+    <a>Size</a>
+    <input id="size" class="styled-range" type="range" min="1" max="100" value="10" step="1">
+    <a>Color</a>
+    <input type="color" id="color" name="head" value="0, 0, 0">
+    <a id="draw" onclick="setToDraw()">Draw</a>
+    <a id="erase" onclick="setToErase()">Erase</a>
+  </div>
+  <div id="canvas-container">
+    <!-- The p5.js canvas will be created here -->
+  </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.5/mobile-detect.min.js"></script>
+<script>
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('.menu');
+  hamburger.classList.toggle('active');
+  menu.classList.toggle('active');
+    
+  function toggleMenu() {
+    hamburger.classList.toggle('active');
+    menu.classList.toggle('active');
+  }
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' || event.keyCode === 27) {
+      toggleMenu()
+    }
+  });
+</script>
+<script> <!-- P5.js stuff -->
+  function hexToRgb(hex) {
+    // Remove the # character if present
+    hex = hex.replace("#", "");
+
+    // Check if the hex code is shorthand (3 characters) or standard (6 characters)
+    if (hex.length === 3) {
+      // Convert shorthand to standard by duplicating each character
+      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+
+    // Extract the red, green, and blue component values
+    var r = parseInt(hex.substring(0, 2), 16);
+    var g = parseInt(hex.substring(2, 4), 16);
+    var b = parseInt(hex.substring(4, 6), 16);
+
+    // Return the RGB values as an object
+    return { r: r, g: g, b: b };
+  }
+  
+  let weight = 10
+  let colorChosen = [0, 0, 0] // Array representing RGB color
+  let prevX
+  let prevY
+  let canvas;
+  
+  let isErasing = false
+  
+  function setToDraw(){
+    isErasing = false
+    document.getElementById('draw').style.fontWeight = 'bold';
+    document.getElementById('erase').style.fontWeight = 'normal';
+  }
+  
+  function setToErase(){
+    isErasing = true
+    document.getElementById('draw').style.fontWeight = 'normal';
+    document.getElementById('erase').style.fontWeight = 'bold';
+  }
+  
+  
+  let isTouching = false;
+  let isTouchingMenu = false;
+  
+  
+  
+  function sketch(p) {
+    let mouseOverHamburger = false;
+    
+    function saveFile() {
+      p.saveCanvas('orange-canvas'/*-, document.getElementById("fileType").value*/);
+    }
+    
+    window.saveFile = saveFile;
+    
+    let rangeInput = document.getElementById("size");
+    rangeInput.addEventListener("input", handleRangeChange);
+
+    function handleRangeChange(event) {
+      weight = event.target.value;
+      console.log(weight);
+      // Perform additional actions based on the changed value
+    }
+    
+    let colorInput = document.getElementById("color");
+    colorInput.addEventListener("input", colorRangeChange);
+    
+    function colorRangeChange(event) {
+      let colorVar = event.target.value;
+      colorVar = hexToRgb(colorVar);
+      console.log(colorVar.r, colorVar.g, colorVar.b);
+      colorChosen[0] = colorVar.r
+      colorChosen[1] = colorVar.g
+      colorChosen[2] = colorVar.b
+      // Perform additional actions based on the changed value
+    }
+    
+    p.setup = function() {
+      // Add event listener for touchstart
+      document.getElementById('hamburger').addEventListener('touchstart', () => {
+        isTouching = true;
+        //console.log('Finger is touching the element.');
+      });
+
+      // Add event listener for touchend
+      document.getElementById('hamburger').addEventListener('touchend', () => {
+        isTouching = false;
+        //console.log('Finger is not touching the element.');
+      });
+      
+      document.getElementById('menu').addEventListener('touchstart', () => {
+        isTouchingMenu = true;
+        //console.log('Finger is touching the menu.');
+      });
+
+      // Add event listener for touchend
+      document.getElementById('menu').addEventListener('touchend', () => {
+        isTouchingMenu = false;
+        //console.log('Finger is not touching the menu.');
+      });
+
+      
+      canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+      canvas.parent("canvas-container");
+      canvas.mouseOver(() => (mouseOverHamburger = true));
+      canvas.mouseOut(() => (mouseOverHamburger = false));
+    }; 
+    
+    let didDraw
+    p.draw = function() {
+      
+      function isMobileDevice() {
+        /*if(window.innerWidth <= 768){
+          return true;
+        }*/
+        if(window.orientation > 1){
+          return true
+        } else {
+          return /Mobi|Android|iPhone|iPad|iPod|Windows Phone|BlackBerry|Mobile Safari|Opera Mini/i.test(navigator.userAgent);
+        }
+      }
+
+      if (isMobileDevice()) {
+        // Code to run if the device is mobile
+        if (!isTouching && !isTouchingMenu) { // Check if mouse is not over hamburger
+          p.strokeWeight(weight);
+          if(isErasing){
+            p.stroke(255, 255, 255);
+            p.fill(255, 255, 255); // Unpack RGB values
+          }else{
+            p.stroke(colorChosen[0], colorChosen[1], colorChosen[2]); // Unpack RGB values
+            p.fill(colorChosen[0], colorChosen[1], colorChosen[2]); // Unpack RGB values
+          }
+      
+          // to make hamburger work needs to be if mouse is touch hamburger
+          // need to alter this so drawing works on mobile
+          if (p.mouseIsPressed){
+            //console.log('drawing')
+            if (didDraw){
+              p.line(prevX, prevY, p.mouseX, p.mouseY);
+              prevX = p.mouseX
+              prevY = p.mouseY
+            } else{
+              prevX = p.mouseX
+              prevY = p.mouseY
+            }
+            didDraw = true
+          }else {
+            prevX = null
+            prevY = null
+            didDraw = false
+          }
+          
+        }
+      } else {
+        // Code to run if the device is not mobile
+        if (mouseOverHamburger) { // Check if mouse is not over hamburger
+          p.strokeWeight(weight);
+          
+          if(isErasing){
+            p.stroke(255, 255, 255);
+            p.fill(255, 255, 255); // Unpack RGB values
+          }else{
+            p.stroke(colorChosen[0], colorChosen[1], colorChosen[2]); // Unpack RGB values
+            p.fill(colorChosen[0], colorChosen[1], colorChosen[2]); // Unpack RGB values
+          }
+          if (p.mouseIsPressed){
+            p.line(prevX, prevY, p.mouseX, p.mouseY);
+          }
+          prevX = p.mouseX
+          prevY = p.mouseY
+        }
+      }
+      
+    };
+  }
+  
+  function clearCanvas() {
+    canvas.clear();
+    canvas.background(255, 254, 252);
+  }
+  
+  new p5(sketch);
+</script>
+</html>
